@@ -1,19 +1,22 @@
 package storage
 
-import "errors"
-
-func (db *Database) Get(key string) (string, error) {
-	val, ok := db.Data[key]
-	if ok {
-		return val, nil
-	}
-	return val, errors.New("not found")
+type Storage struct {
+	data map[string]string
 }
 
-func (db *Database) Set(key, value string) {
-	db.Data[key] = value
+func NewStorage() *Storage {
+	return &Storage{data: make(map[string]string)}
 }
 
-func (db *Database) Delete(key string) {
-	delete(db.Data, key)
+func (s *Storage) Get(key string) (string, bool) {
+	val, ok := s.data[key]
+	return val, ok
+}
+
+func (s *Storage) Set(key, value string) {
+	s.data[key] = value
+}
+
+func (s *Storage) Delete(key string) {
+	delete(s.data, key)
 }
